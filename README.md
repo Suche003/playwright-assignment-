@@ -4,7 +4,6 @@
 ![Playwright](https://img.shields.io/badge/Automation-Playwright-green)
 ![Node.js](https://img.shields.io/badge/Node.js-Required-blue)
 ![Browser](https://img.shields.io/badge/Browser-Chrome-yellow)
-![Status](https://img.shields.io/badge/Test-UI%20Automation-success)
 
 This project contains **UI automation tests** for
 **[https://www.swifttranslator.com/](https://www.swifttranslator.com/)** using **Playwright Test**.
