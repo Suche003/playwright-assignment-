@@ -1,117 +1,183 @@
-# SwiftTranslator UI Automation (Playwright)
+
+# SwiftTranslator Playwright Automation
 
 ![Playwright](https://img.shields.io/badge/Automation-Playwright-green)
 ![Node.js](https://img.shields.io/badge/Node.js-Required-blue)
 ![Browser](https://img.shields.io/badge/Browser-Chrome-yellow)
-![Status](https://img.shields.io/badge/Test-Type%20Input%20Validation-success)
+![Status](https://img.shields.io/badge/Test-UI%20Automation-success)
 
-This project automates UI testing for **https://www.swifttranslator.com/** using *Playwright Test*.  
-It validates that the application correctly handles *different types of text inputs* and updates translation output properly.
+This project contains **UI automation tests** for
+**[https://www.swifttranslator.com/](https://www.swifttranslator.com/)** using **Playwright Test**.
+
+The automation validates that the application correctly handles **different types of user inputs** and dynamically updates the translated output.
 
 ---
 
 ## Project Objective
 
-To verify that SwiftTranslator:
+The goal of this project is to verify that SwiftTranslator:
 
-✔ Accepts multiple languages  
-✔ Handles emojis and special characters  
-✔ Processes long text inputs  
-✔ Updates output dynamically  
-✔ Stays stable under repeated input testing  
+* Accepts multiple languages (Sinhala, Tamil, English)
+* Handles emojis and special characters
+* Processes mixed and noisy input correctly
+* Updates translation output automatically (without submit button)
+* Remains stable during repeated input testing
+* Allows visual verification using a real browser
+
+---
+
+## Prerequisites
+
+Make sure the following are installed on your system:
+
+* **Node.js** (v16 or later recommended)
+* **npm** (comes with Node.js)
+* **Google Chrome** browser
+* Internet connection (application is web-based)
 
 ---
 
 ## How to Run This Project
 
-Follow these steps after cloning the repository.
+Follow these steps **after cloning the repository**.
 
-## Clone the repository
-git clone <your-repo-link>
-cd <repo-folder>
+### 1 Clone the repository
 
-## 2 Install Node modules
+```bash
+git clone https://github.com/Suche003/playwright-assignment-.git
+cd playwright-assignment-
+```
+
+---
+
+### 2 Install project dependencies
+
+```bash
 npm install
+```
 
-## 3 Install Playwright browsers
+---
+
+### 3 Install Playwright browsers
+
+```bash
 npx playwright install
+```
 
-## 4 Run the tests
+---
+
+### 4 Run the Playwright tests
+
+```bash
 npx playwright test
+```
 
+### What you will observe:
 
-You will see:
+* Chrome browser opens in **headed mode**
+* Text is typed **slowly (character by character)**
+* Translation output updates automatically
+* Each input pauses for **5 seconds** for visual verification
+* Browser closes only after all inputs are processed
 
-Browser opens
+---
 
-Text typed slowly
+### 5 View the HTML test report (optional)
 
-Translation output appears
-
-Each input waits 5 seconds
-
-## 5 View the test report
+```bash
 npx playwright show-report
+```
 
-Opens detailed HTML report in browser.
+This opens a detailed Playwright HTML report in the browser.
 
--- 
+---
+
+## Types of Inputs Tested
+
+The test covers a wide range of real-world input scenarios:
+
+* Sinhala transliterations
+  `heta gedhara innavaa`
+* Tamil text
+  `உயிரெழுத்துக்கள்`
+* Emojis
+  `😀😃😄`
+* Special characters
+  `@@@@****`
+* Mixed characters
+  `ma@ma meeka# pariika$Shaa karanavaa`
+* English sentences
+* Repeated and varied inputs
+
+---
 
 ## Tech Stack
 
-| Tool | Purpose |
-|------|--------|
-| Playwright Test | UI Automation Framework |
-| Node.js | Runtime Environment |
-| Google Chrome | Browser Execution |
-| HTML Reporter | Test Report Generation |
+| Tool            | Purpose                 |
+| --------------- | ----------------------- |
+| Playwright Test | UI automation framework |
+| Node.js         | Runtime environment     |
+| Google Chrome   | Browser execution       |
+| JavaScript      | Test scripting          |
+| HTML Reporter   | Test result reporting   |
 
 ---
 
 ## Project Structure
 
-.
+```
+PLAYWRIGHT/
+├── .github/                    # GitHub workflows/configs
+├── node_modules/               # Installed dependencies
+├── playwright-report/          # HTML test reports
+├── test-results/               # Test execution results
 ├── tests/
-│ └── inputHandling.spec.js # Main Playwright test
-├── testCase.js # Test inputs list
-├── playwright.config.js # Playwright configuration
-├── package.json
-└── README.md
+│   ├── inputHandling.spec.js   # Main Playwright test file
+│   └── testCase.js             # Input test data
+├── .gitignore                  # Git ignore rules
+├── package-lock.json
+├── package.json                # Project dependencies & scripts
+├── playwright.config.js        # Playwright configuration
+├── README.md                   # Project documentation
+└── RepositoryLink.txt          # Repository reference link
+
+```
 
 ---
 
 ## Playwright Configuration Highlights
 
-- Headful execution (headless: false)
-- Slow motion enabled (slowMo: 2000)
-- Sequential test run (workers: 1)
-- Real Google Chrome (channel: chrome)
-- Trace collection on retry
+* Runs **only on Chrome**
+* Headed mode (`headless: false`)
+* Slow execution for visual observation
+* Sequential execution (single worker)
+* Automatic translation handling (no submit button)
+* HTML reporter enabled
 
 ---
 
 ## Test Flow
 
-1. Launch browser  
-2. Open SwiftTranslator  
-3. Locate input and output fields  
-4. Loop through test inputs  
-5. Clear previous input  
-6. Type new text slowly  
-7. Wait until translation output changes  
-8. Pause for visual verification  
-9. Repeat  
+1. Launch Chrome browser
+2. Navigate to SwiftTranslator
+3. Locate input and output text areas
+4. Loop through test input list
+5. Clear previous input
+6. Type new text **slowly (0.5s per character)**
+7. Wait until translation output changes
+8. Pause 5 seconds for observation
+9. Repeat for all inputs
 
 ---
 
-## Core Test Logic
+## Core Test Logic (Excerpt)
 
 ```js
 for (const text of inputs) {
   const previousOutput = await outputBox.textContent();
 
   await inputBox.fill('');
-  await inputBox.type(text, { delay: 100 });
+  await inputBox.type(text, { delay: 500 });
 
   await expect
     .poll(async () => await outputBox.textContent(), { timeout: 20000 })
@@ -119,23 +185,22 @@ for (const text of inputs) {
 
   await page.waitForTimeout(5000);
 }
+```
 
- Types of Inputs Tested
+---
 
-Sinhala transliterations
+## Notes for Evaluators
 
-Tamil text → உயிரெழுத்துக்கள்
+* This project is designed for **visual verification**
+* GitHub Actions may fail due to headed browser usage
+* Local execution works as intended
+* No external test data or environment variables required
 
-Emojis → 😀😃😄
+---
 
-Special symbols → @@@**
+## Repository Access
 
-Mixed symbols → ma@ma meeka# pariika$Shaa karanavaa
+This repository is **publicly accessible** and can be cloned and executed without additional configuration.
 
-English sentence
+---
 
-Long paragraph input
-
-Numeric/date input
-
- 
